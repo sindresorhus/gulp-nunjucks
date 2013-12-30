@@ -1,0 +1,43 @@
+{
+  "name": "gulp-nunjucks",
+  "version": "0.0.0",
+  "description": "Precompile Nunjucks templates",
+  "license": "MIT",
+  "repository": "sindresorhus/gulp-nunjucks",
+  "author": {
+    "name": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "http://sindresorhus.com"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "gulpplugin",
+    "nunjucks",
+    "jinja",
+    "jinja2",
+    "django",
+    "template",
+    "templating",
+    "view",
+    "precompile",
+    "compile",
+    "html",
+    "javascript"
+  ],
+  "dependencies": {
+    "event-stream": "~3.0.20",
+    "gulp-util": "~2.2.0",
+    "nunjucks": "~1.0.0"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  }
+}
