@@ -1,14 +1,15 @@
 'use strict';
-var es = require('event-stream');
 var gutil = require('gulp-util');
+var through = require('through');
 var nunjucks = require('nunjucks');
 
 module.exports = function (options) {
-	return es.map(function (file, cb) {
-		options = options || {};
-		options.name = options.name || file.path;
+	options = options || {};
+
+	return through(function (file) {
+		options.name = typeof options.name === 'function' && options.name(file) || file.relative;
 		file.contents = new Buffer(nunjucks.precompileString(file.contents.toString(), options));
 		file.path = gutil.replaceExtension(file.path, '.js');
-		cb(null, file);
+		this.emit('data', file);
 	});
 };

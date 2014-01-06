@@ -21,7 +21,7 @@ var gulp = require('gulp');
 var nunjucks = require('gulp-nunjucks');
 
 gulp.task('default', function () {
-	gulp.src('src/template.html')
+	gulp.src('templates/list.html')
 		.pipe(nunjucks())
 		.pipe(gulp.dest('dist'));
 });
@@ -32,7 +32,24 @@ gulp.task('default', function () {
 
 ### nunjucks(options)
 
-Same options as [nunjucks.precompile()](http://jlongster.github.io/nunjucks/api.html#precompile).
+Same options as [`nunjucks.precompile()`](http://jlongster.github.io/nunjucks/api.html#precompile) except for `name`.
+
+#### options.name
+
+Type: `Function`  
+Default: *Relative template path. Example: `templates/list.html`*
+
+You can override the default behavior by supplying a function which gets the current [File](https://github.com/wearefractal/vinyl#constructoroptions) object and is expected to return the name.
+
+Example:
+
+```js
+{
+	name: function (file) {
+		return 'tpl-' + file.relative;
+	}
+}
+```
 
 
 ## License
