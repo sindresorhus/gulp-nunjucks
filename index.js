@@ -1,6 +1,7 @@
 'use strict';
 var gutil = require('gulp-util');
 var through = require('through2');
+var assign = require('object-assign');
 var nunjucks = require('nunjucks');
 
 module.exports = function (options) {
@@ -17,9 +18,11 @@ module.exports = function (options) {
 			return cb();
 		}
 
+		var opts = assign({}, options);
+
 		try {
-			options.name = typeof options.name === 'function' && options.name(file) || file.relative;
-			file.contents = new Buffer(nunjucks.precompileString(file.contents.toString(), options));
+			opts.name = typeof options.name === 'function' && options.name(file) || file.relative;
+			file.contents = new Buffer(nunjucks.precompileString(file.contents.toString(), opts));
 			file.path = gutil.replaceExtension(file.path, '.js');
 		} catch (err) {
 			this.emit('error', new gutil.PluginError('gulp-nunjucks', err));
