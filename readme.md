@@ -1,4 +1,4 @@
-# [gulp](https://github.com/wearefractal/gulp)-nunjucks [![Build Status](https://secure.travis-ci.org/sindresorhus/gulp-nunjucks.png?branch=master)](http://travis-ci.org/sindresorhus/gulp-nunjucks)
+# [gulp](http://gulpjs.com)-nunjucks [![Build Status](https://travis-ci.org/sindresorhus/gulp-nunjucks.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-nunjucks)
 
 > Precompile [Nunjucks](http://jlongster.github.io/nunjucks/) templates
 
@@ -7,14 +7,12 @@
 
 ## Install
 
-Install with [npm](https://npmjs.org/package/gulp-nunjucks)
-
-```
-npm install --save-dev gulp-nunjucks
+```bash
+$ npm install --save-dev gulp-nunjucks
 ```
 
 
-## Example
+## Usage
 
 ```js
 var gulp = require('gulp');
@@ -54,4 +52,4 @@ Example:
 
 ## License
 
-MIT © [Sindre Sorhus](http://sindresorhus.com)
+[MIT](http://opensource.org/licenses/MIT) © [Sindre Sorhus](http://sindresorhus.com)
