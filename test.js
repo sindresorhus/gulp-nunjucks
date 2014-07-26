@@ -1,7 +1,7 @@
 'use strict';
 var assert = require('assert');
 var gutil = require('gulp-util');
-var nunjucks = require('./index');
+var nunjucks = require('./');
 
 it('should precompile Nunjucks templates', function (cb) {
 	var stream = nunjucks();

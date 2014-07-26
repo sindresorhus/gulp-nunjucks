@@ -19,13 +19,14 @@ module.exports = function (options) {
 		}
 
 		var opts = assign({}, options);
+		var filePath = file.path;
 
 		try {
 			opts.name = typeof options.name === 'function' && options.name(file) || file.relative;
 			file.contents = new Buffer(nunjucks.precompileString(file.contents.toString(), opts));
 			file.path = gutil.replaceExtension(file.path, '.js');
 		} catch (err) {
-			this.emit('error', new gutil.PluginError('gulp-nunjucks', err));
+			this.emit('error', new gutil.PluginError('gulp-nunjucks', err, {fileName: filePath}));
 		}
 
 		this.push(file);
