@@ -9,13 +9,13 @@ module.exports = function (options) {
 
 	return through.obj(function (file, enc, cb) {
 		if (file.isNull()) {
-			this.push(file);
-			return cb();
+			cb(null, file);
+			return;
 		}
 
 		if (file.isStream()) {
-			this.emit('error', new gutil.PluginError('gulp-nunjucks', 'Streaming not supported'));
-			return cb();
+			cb(new gutil.PluginError('gulp-nunjucks', 'Streaming not supported'));
+			return;
 		}
 
 		var opts = assign({}, options);
@@ -25,11 +25,9 @@ module.exports = function (options) {
 			opts.name = typeof options.name === 'function' && options.name(file) || file.relative;
 			file.contents = new Buffer(nunjucks.precompileString(file.contents.toString(), opts));
 			file.path = gutil.replaceExtension(file.path, '.js');
+			cb(null, file);
 		} catch (err) {
-			this.emit('error', new gutil.PluginError('gulp-nunjucks', err, {fileName: filePath}));
+			cb(new gutil.PluginError('gulp-nunjucks', err, {fileName: filePath}));
 		}
-
-		this.push(file);
-		cb();
 	});
 };

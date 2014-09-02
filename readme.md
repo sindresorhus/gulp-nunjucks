@@ -7,7 +7,7 @@
 
 ## Install
 
-```bash
+```sh
 $ npm install --save-dev gulp-nunjucks
 ```
 
@@ -19,7 +19,7 @@ var gulp = require('gulp');
 var nunjucks = require('gulp-nunjucks');
 
 gulp.task('default', function () {
-	gulp.src('templates/list.html')
+	return gulp.src('templates/list.html')
 		.pipe(nunjucks())
 		.pipe(gulp.dest('dist'));
 });
@@ -34,7 +34,7 @@ Same options as [`nunjucks.precompile()`](http://jlongster.github.io/nunjucks/ap
 
 #### options.name
 
-Type: `Function`  
+Type: `function`  
 Default: *Relative template path. Example: `templates/list.html`*
 
 You can override the default behavior by supplying a function which gets the current [File](https://github.com/wearefractal/vinyl#constructoroptions) object and is expected to return the name.
@@ -52,4 +52,4 @@ Example:
 
 ## License
 
-[MIT](http://opensource.org/licenses/MIT) © [Sindre Sorhus](http://sindresorhus.com)
+MIT © [Sindre Sorhus](http://sindresorhus.com)
