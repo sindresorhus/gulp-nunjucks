@@ -1,6 +1,6 @@
 # [gulp](http://gulpjs.com)-nunjucks [![Build Status](https://travis-ci.org/sindresorhus/gulp-nunjucks.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-nunjucks)
 
-> Precompile [Nunjucks](http://jlongster.github.io/nunjucks/) templates
+> Precompile [Nunjucks](http://mozilla.github.io/nunjucks/) templates
 
 *Issues with the output should be reported on the Nunjucks [issue tracker](https://github.com/jlongster/nunjucks/issues).*
 
@@ -30,7 +30,7 @@ gulp.task('default', function () {
 
 ### nunjucks(options)
 
-Same options as [`nunjucks.precompile()`](http://jlongster.github.io/nunjucks/api.html#precompile) except for `name`.
+Same options as [`nunjucks.precompile()`](http://mozilla.github.io/nunjucks/api.html#precompile) except for `name`.
 
 #### options.name
 
