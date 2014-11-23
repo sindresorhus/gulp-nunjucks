@@ -4,9 +4,7 @@ var through = require('through2');
 var assign = require('object-assign');
 var nunjucks = require('nunjucks');
 
-module.exports = function (options) {
-	options = options || {};
-
+module.exports = function (opts) {
 	return through.obj(function (file, enc, cb) {
 		if (file.isNull()) {
 			cb(null, file);
@@ -18,16 +16,19 @@ module.exports = function (options) {
 			return;
 		}
 
-		var opts = assign({}, options);
+		opts = assign({}, opts);
+
 		var filePath = file.path;
 
 		try {
-			opts.name = typeof options.name === 'function' && options.name(file) || file.relative;
+			opts.name = typeof opts.name === 'function' && opts.name(file) || file.relative;
 			file.contents = new Buffer(nunjucks.precompileString(file.contents.toString(), opts));
 			file.path = gutil.replaceExtension(file.path, '.js');
-			cb(null, file);
+			this.push(file);
 		} catch (err) {
-			cb(new gutil.PluginError('gulp-nunjucks', err, {fileName: filePath}));
+			this.emit('error', new gutil.PluginError('gulp-nunjucks', err, {fileName: filePath}));
 		}
+
+		cb();
 	});
 };
