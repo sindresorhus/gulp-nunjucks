@@ -16,13 +16,13 @@ module.exports = function (opts) {
 			return;
 		}
 
-		opts = assign({}, opts);
+		var options = assign({}, opts);
 
 		var filePath = file.path;
 
 		try {
-			opts.name = typeof opts.name === 'function' && opts.name(file) || file.relative;
-			file.contents = new Buffer(nunjucks.precompileString(file.contents.toString(), opts));
+			options.name = typeof options.name === 'function' && options.name(file) || file.relative;
+			file.contents = new Buffer(nunjucks.precompileString(file.contents.toString(), options));
 			file.path = gutil.replaceExtension(file.path, '.js');
 			this.push(file);
 		} catch (err) {
