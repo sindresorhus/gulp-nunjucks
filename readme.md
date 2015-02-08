@@ -1,4 +1,4 @@
-# [gulp](http://gulpjs.com)-nunjucks [![Build Status](https://travis-ci.org/sindresorhus/gulp-nunjucks.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-nunjucks)
+# gulp-nunjucks [![Build Status](https://travis-ci.org/sindresorhus/gulp-nunjucks.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-nunjucks)
 
 > Precompile [Nunjucks](http://mozilla.github.io/nunjucks/) templates
 
@@ -7,7 +7,7 @@
 
 ## Install
 
-```sh
+```
 $ npm install --save-dev gulp-nunjucks
 ```
 
