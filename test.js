@@ -1,19 +1,18 @@
-/* eslint-env mocha */
 'use strict';
 var path = require('path');
-var assert = require('assert');
 var gutil = require('gulp-util');
+var test = require('ava');
 var nunjucks = require('./');
 
-it('should precompile Nunjucks templates', function (cb) {
+test('precompile Nunjucks templates', function (t) {
 	var stream = nunjucks();
 
 	stream.on('data', function (file) {
-		assert.equal(file.path, path.join(__dirname, 'fixture', 'fixture.js'));
-		assert.equal(file.relative, 'fixture/fixture.js');
-		assert(/nunjucksPrecompiled/.test(file.contents.toString()));
-		assert(/"fixture\/fixture\.html"/.test(file.contents.toString()));
-		cb();
+		t.is(file.path, path.join(__dirname, 'fixture', 'fixture.js'));
+		t.is(file.relative, 'fixture/fixture.js');
+		t.regexTest(/nunjucksPrecompiled/, file.contents.toString());
+		t.regexTest(/"fixture\/fixture\.html"/, file.contents.toString());
+		t.end();
 	});
 
 	stream.write(new gutil.File({
@@ -23,7 +22,7 @@ it('should precompile Nunjucks templates', function (cb) {
 	}));
 });
 
-it('should support supplying custom name in a callback', function (cb) {
+test('support supplying custom name in a callback', function (t) {
 	var stream = nunjucks({
 		name: function () {
 			return 'custom';
@@ -31,8 +30,8 @@ it('should support supplying custom name in a callback', function (cb) {
 	});
 
 	stream.on('data', function (file) {
-		assert(/{}\)\["custom"\]/.test(file.contents.toString()));
-		cb();
+		t.regexTest(/{}\)\["custom"\]/, file.contents.toString());
+		t.end();
 	});
 
 	stream.write(new gutil.File({
