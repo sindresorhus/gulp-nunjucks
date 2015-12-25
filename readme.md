@@ -1,8 +1,8 @@
 # gulp-nunjucks [![Build Status](https://travis-ci.org/sindresorhus/gulp-nunjucks.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-nunjucks)
 
-> Precompile [Nunjucks](http://mozilla.github.io/nunjucks/) templates
+> Compile/precompile [Nunjucks](https://mozilla.github.io/nunjucks/) templates
 
-*Issues with the output should be reported on the Nunjucks [issue tracker](https://github.com/jlongster/nunjucks/issues).*
+*Issues with the output should be reported on the Nunjucks [issue tracker](https://github.com/mozilla/nunjucks/issues).*
 
 
 ## Install
@@ -14,13 +14,45 @@ $ npm install --save-dev gulp-nunjucks
 
 ## Usage
 
+### Compiling
+
 ```js
 var gulp = require('gulp');
 var nunjucks = require('gulp-nunjucks');
 
 gulp.task('default', function () {
-	return gulp.src('templates/list.html')
-		.pipe(nunjucks())
+	return gulp.src('templates/greeting.html')
+		.pipe(nunjucks.compile({name: 'Sindre'}))
+		.pipe(gulp.dest('dist'));
+});
+```
+
+You can alternatively use [gulp-data](https://github.com/colynb/gulp-data) to inject the data:
+
+```js
+var gulp = require('gulp');
+var nunjucks = require('gulp-nunjucks');
+var data = require('gulp-data');
+
+gulp.task('default', function () {
+	return gulp.src('templates/greeting.html')
+		.pipe(data(function () {
+			return {name: 'Sindre'};
+		}))
+		.pipe(nunjucks.compile())
+		.pipe(gulp.dest('dist'));
+});
+```
+
+### Precompiling
+
+```js
+var gulp = require('gulp');
+var nunjucks = require('gulp-nunjucks');
+
+gulp.task('default', function () {
+	return gulp.src('templates/greeting.html')
+		.pipe(nunjucks.precompile())
 		.pipe(gulp.dest('dist'));
 });
 ```
@@ -28,9 +60,34 @@ gulp.task('default', function () {
 
 ## API
 
-### nunjucks(options)
+### nunjucks.compile([data], [options])
 
-Same options as [`nunjucks.precompile()`](http://mozilla.github.io/nunjucks/api.html#precompile) except for `name`.
+Compile a template using the provided `data`.
+
+#### data
+
+Type: `Object`
+
+The data object used to populate the text.
+
+#### options
+
+Type: `Object`
+
+The options object for `gulp-nunjucks`.
+
+##### options.env
+
+Type: `nunjucks.Environment`  
+Default: *`new nunjucks.Environment()`*
+
+The custom Nunjucks [Environment object](https://mozilla.github.io/nunjucks/api.html#environment) which will be used to compile templates.
+
+### nunjucks.precompile([options])
+
+Precompile a template for rendering dynamically at a later time.
+
+Same options as [`nunjucks.precompile()`](https://mozilla.github.io/nunjucks/api.html#precompile) except for `name`.
 
 #### options.name
 

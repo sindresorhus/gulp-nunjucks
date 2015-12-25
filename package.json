@@ -1,7 +1,7 @@
 {
   "name": "gulp-nunjucks",
   "version": "2.0.0",
-  "description": "Precompile Nunjucks templates",
+  "description": "Compile/precompile Nunjucks templates",
   "license": "MIT",
   "repository": "sindresorhus/gulp-nunjucks",
   "author": {
@@ -34,12 +34,13 @@
   ],
   "dependencies": {
     "gulp-util": "^3.0.0",
-    "nunjucks": "^2.0.0",
+    "nunjucks": "^2.2.0",
     "object-assign": "^4.0.1",
     "through2": "^2.0.0"
   },
   "devDependencies": {
     "ava": "*",
+    "gulp-data": "^1.2.1",
     "xo": "*"
   }
 }
