@@ -1,14 +1,13 @@
-'use strict';
-var path = require('path');
-var gutil = require('gulp-util');
-var test = require('ava');
-var data = require('gulp-data');
-var nunjucks = require('./');
+import path from 'path';
+import test from 'ava';
+import gutil from 'gulp-util';
+import data from 'gulp-data';
+import fn from './';
 
-test.cb('precompile Nunjucks templates', function (t) {
-	var stream = nunjucks();
+test.cb('precompile Nunjucks templates', t => {
+	const stream = fn();
 
-	stream.on('data', function (file) {
+	stream.on('data', file => {
 		t.is(file.path, path.join(__dirname, 'fixture', 'fixture.js'));
 		t.is(file.relative, 'fixture/fixture.js');
 		t.regexTest(/nunjucksPrecompiled/, file.contents.toString());
@@ -23,14 +22,12 @@ test.cb('precompile Nunjucks templates', function (t) {
 	}));
 });
 
-test.cb('support supplying custom name in a callback', function (t) {
-	var stream = nunjucks({
-		name: function () {
-			return 'custom';
-		}
+test.cb('support supplying custom name in a callback', t => {
+	const stream = fn({
+		name: () => 'custom'
 	});
 
-	stream.on('data', function (file) {
+	stream.on('data', file => {
 		t.regexTest(/{}\)\["custom"\]/, file.contents.toString());
 		t.end();
 	});
@@ -42,10 +39,10 @@ test.cb('support supplying custom name in a callback', function (t) {
 	}));
 });
 
-test.cb('compile Nunjucks templates', function (t) {
-	var stream = nunjucks.compile({people: ['foo', 'bar']});
+test.cb('compile Nunjucks templates', t => {
+	const stream = fn.compile({people: ['foo', 'bar']});
 
-	stream.on('data', function (file) {
+	stream.on('data', file => {
 		t.is(file.contents.toString(), '<li>foo</li><li>bar</li>');
 		t.end();
 	});
@@ -55,25 +52,22 @@ test.cb('compile Nunjucks templates', function (t) {
 	}));
 });
 
-test.cb('support data via gulp-data', function (t) {
-	var dl = [];
+test.cb('support data via gulp-data', t => {
+	const dl = [];
 
-	var stream = data(function (file) {
-		return {
-			dd: file.path,
-			dt: 'path'
-		};
-	});
+	const stream = data(file => ({
+		dd: file.path,
+		dt: 'path'
+	}));
 
-	stream.pipe(nunjucks.compile());
+	stream.pipe(fn.compile());
 
-	stream.on('data', function (file) {
+	stream.on('data', file => {
 		dl.push(file.contents.toString());
 	});
 
-	stream.on('end', function () {
-		var expected = '<dt>path</dt><dd>bar.txt</dd><dt>path</dt><dd>foo.txt</dd>';
-		t.is(dl.sort().join(''), expected);
+	stream.on('end', () => {
+		t.is(dl.sort().join(''), '<dt>path</dt><dd>bar.txt</dd><dt>path</dt><dd>foo.txt</dd>');
 		t.end();
 	});
 
@@ -90,22 +84,19 @@ test.cb('support data via gulp-data', function (t) {
 	stream.end();
 });
 
-test.cb('extend gulp-data and data parameter', function (t) {
-	var stream = data(function () {
-		return {
-			people: ['foo', 'bar'],
-			nested: {a: 'one', b: 'two'}
-		};
-	});
+test.cb('extend gulp-data and data parameter', t => {
+	const stream = data(() => ({
+		people: ['foo', 'bar'],
+		nested: {a: 'one', b: 'two'}
+	}));
 
-	stream.pipe(nunjucks.compile({
+	stream.pipe(fn.compile({
 		heading: 'people',
 		nested: {a: 'three'}
 	}));
 
-	stream.on('data', function (data) {
-		var expected = '<h1>people</h1><li>foo</li><li>bar</li>one,two';
-		t.is(data.contents.toString(), expected);
+	stream.on('data', data => {
+		t.is(data.contents.toString(), '<h1>people</h1><li>foo</li><li>bar</li>one,two');
 		t.end();
 	});
 
@@ -114,28 +105,26 @@ test.cb('extend gulp-data and data parameter', function (t) {
 	}));
 });
 
-test.cb('not alter gulp-data or data parameter', function (t) {
-	var files = [];
+test.cb('not alter gulp-data or data parameter', t => {
+	const files = [];
 
-	var stream = data(function (file) {
-		return {
-			contents: file.contents.toString()
-		};
-	});
+	const stream = data(file => ({
+		contents: file.contents.toString()
+	}));
 
-	var parameter = {
+	const parameter = {
 		foo: 'foo',
 		bar: 'bar',
 		foobar: ['foo', 'bar']
 	};
 
-	stream.pipe(nunjucks.compile(parameter));
+	stream.pipe(fn.compile(parameter));
 
-	stream.on('data', function (file) {
+	stream.on('data', file => {
 		files.push(file);
 	});
 
-	stream.on('end', function () {
+	stream.on('end', () => {
 		t.same(files[0].data, {contents: 'foo'});
 		t.same(parameter, {
 			foo: 'foo',
@@ -152,17 +141,15 @@ test.cb('not alter gulp-data or data parameter', function (t) {
 	stream.end();
 });
 
-test.cb('support custom environment', function (t) {
-	var nunjucksModule = require('nunjucks');
-	var env = new nunjucksModule.Environment();
+test.cb('support custom environment', t => {
+	const nunjucksModule = require('nunjucks');
+	const env = new nunjucksModule.Environment();
 
-	env.addFilter('shorten', function (str) {
-		return str.slice(0, 5);
-	});
+	env.addFilter('shorten', x => x.slice(0, 5));
 
-	var stream = nunjucks.compile({message: 'Lorem ipsum'}, {env: env});
+	const stream = fn.compile({message: 'Lorem ipsum'}, {env});
 
-	stream.on('data', function (file) {
+	stream.on('data', file => {
 		t.is(file.contents.toString(), 'Lorem');
 		t.end();
 	});

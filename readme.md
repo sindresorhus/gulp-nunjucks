@@ -14,13 +14,13 @@ $ npm install --save-dev gulp-nunjucks
 
 ## Usage
 
-### Compiling
+### Compile
 
 ```js
-var gulp = require('gulp');
-var nunjucks = require('gulp-nunjucks');
+const gulp = require('gulp');
+const nunjucks = require('gulp-nunjucks');
 
-gulp.task('default', function () {
+gulp.task('default', () => {
 	return gulp.src('templates/greeting.html')
 		.pipe(nunjucks.compile({name: 'Sindre'}))
 		.pipe(gulp.dest('dist'));
@@ -30,13 +30,13 @@ gulp.task('default', function () {
 You can alternatively use [gulp-data](https://github.com/colynb/gulp-data) to inject the data:
 
 ```js
-var gulp = require('gulp');
-var nunjucks = require('gulp-nunjucks');
-var data = require('gulp-data');
+const gulp = require('gulp');
+const nunjucks = require('gulp-nunjucks');
+const data = require('gulp-data');
 
-gulp.task('default', function () {
+gulp.task('default', () => {
 	return gulp.src('templates/greeting.html')
-		.pipe(data(function () {
+		.pipe(data(() => {
 			return {name: 'Sindre'};
 		}))
 		.pipe(nunjucks.compile())
@@ -44,13 +44,13 @@ gulp.task('default', function () {
 });
 ```
 
-### Precompiling
+### Precompile
 
 ```js
-var gulp = require('gulp');
-var nunjucks = require('gulp-nunjucks');
+const gulp = require('gulp');
+const nunjucks = require('gulp-nunjucks');
 
-gulp.task('default', function () {
+gulp.task('default', () => {
 	return gulp.src('templates/greeting.html')
 		.pipe(nunjucks.precompile())
 		.pipe(gulp.dest('dist'));
@@ -66,15 +66,11 @@ Compile a template using the provided `data`.
 
 #### data
 
-Type: `Object`
+Type: `object`
 
 The data object used to populate the text.
 
 #### options
-
-Type: `Object`
-
-The options object for `gulp-nunjucks`.
 
 ##### options.env
 
@@ -100,9 +96,7 @@ Example:
 
 ```js
 {
-	name: function (file) {
-		return 'tpl-' + file.relative;
-	}
+	name: file => `tpl-${file.relative}`
 }
 ```
 
