@@ -5,7 +5,6 @@ var assign = require('object-assign');
 var nunjucks = require('nunjucks');
 
 function compile(data, opts) {
-
 	return through.obj(function (file, enc, cb) {
 		if (file.isNull()) {
 			cb(null, file);
