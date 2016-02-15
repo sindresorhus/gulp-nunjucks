@@ -158,3 +158,16 @@ test.cb('support custom environment', t => {
 		contents: new Buffer('{{ message|shorten }}')
 	}));
 });
+
+test.cb('support custom environment options', t => {
+	const stream = fn.compile({message: '<span>Lorem ipsum</span>'}, {autoescape: false});
+
+	stream.on('data', file => {
+		t.is(file.contents.toString(), '<span>Lorem ipsum</span>');
+		t.end();
+	});
+
+	stream.write(new gutil.File({
+		contents: new Buffer('{{ message }}')
+	}));
+});

@@ -76,6 +76,13 @@ Type: `object`
 
 Options will be passed directly to Nunjucks [Environment object constructor](https://mozilla.github.io/nunjucks/api.html#constructor) which will be used to compile templates.
 
+##### options.env
+
+Type: `nunjucks.Environment`  
+Default: *`new nunjucks.Environment()`*
+
+The custom Nunjucks [Environment object](https://mozilla.github.io/nunjucks/api.html#environment) which will be used to compile templates. If supplied, the rest of `options` will be ignored.
+
 ### nunjucks.precompile([options])
 
 Precompile a template for rendering dynamically at a later time.
