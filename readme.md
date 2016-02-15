@@ -72,12 +72,9 @@ The data object used to populate the text.
 
 #### options
 
-##### options.env
+Type: `object`
 
-Type: `nunjucks.Environment`  
-Default: *`new nunjucks.Environment()`*
-
-The custom Nunjucks [Environment object](https://mozilla.github.io/nunjucks/api.html#environment) which will be used to compile templates.
+Options will be passed directly to Nunjucks [Environment object constructor](https://mozilla.github.io/nunjucks/api.html#constructor) which will be used to compile templates.
 
 ### nunjucks.precompile([options])
 
