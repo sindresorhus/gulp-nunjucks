@@ -10,8 +10,8 @@ test.cb('precompile Nunjucks templates', t => {
 	stream.on('data', file => {
 		t.is(file.path, path.join(__dirname, 'fixture', 'fixture.js'));
 		t.is(file.relative, 'fixture/fixture.js');
-		t.regexTest(/nunjucksPrecompiled/, file.contents.toString());
-		t.regexTest(/"fixture\/fixture\.html"/, file.contents.toString());
+		t.regex(file.contents.toString(), /nunjucksPrecompiled/);
+		t.regex(file.contents.toString(), /"fixture\/fixture\.html"/);
 		t.end();
 	});
 
@@ -28,7 +28,7 @@ test.cb('support supplying custom name in a callback', t => {
 	});
 
 	stream.on('data', file => {
-		t.regexTest(/{}\)\["custom"\]/, file.contents.toString());
+		t.regex(file.contents.toString(), /{}\)\["custom"\]/);
 		t.end();
 	});
 
