@@ -20,11 +20,11 @@ $ npm install --save-dev gulp-nunjucks
 const gulp = require('gulp');
 const nunjucks = require('gulp-nunjucks');
 
-gulp.task('default', () => {
-	return gulp.src('templates/greeting.html')
+gulp.task('default', () =>
+	gulp.src('templates/greeting.html')
 		.pipe(nunjucks.compile({name: 'Sindre'}))
-		.pipe(gulp.dest('dist'));
-});
+		.pipe(gulp.dest('dist'))
+);
 ```
 
 You can alternatively use [gulp-data](https://github.com/colynb/gulp-data) to inject the data:
@@ -34,14 +34,12 @@ const gulp = require('gulp');
 const nunjucks = require('gulp-nunjucks');
 const data = require('gulp-data');
 
-gulp.task('default', () => {
-	return gulp.src('templates/greeting.html')
-		.pipe(data(() => {
-			return {name: 'Sindre'};
-		}))
+gulp.task('default', () =>
+	gulp.src('templates/greeting.html')
+		.pipe(data(() => ({name: 'Sindre'})))
 		.pipe(nunjucks.compile())
-		.pipe(gulp.dest('dist'));
-});
+		.pipe(gulp.dest('dist'))
+);
 ```
 
 ### Precompile
@@ -50,11 +48,11 @@ gulp.task('default', () => {
 const gulp = require('gulp');
 const nunjucks = require('gulp-nunjucks');
 
-gulp.task('default', () => {
-	return gulp.src('templates/greeting.html')
+gulp.task('default', () =>
+	gulp.src('templates/greeting.html')
 		.pipe(nunjucks.precompile())
-		.pipe(gulp.dest('dist'));
-});
+		.pipe(gulp.dest('dist'))
+);
 ```
 
 
@@ -74,11 +72,11 @@ The data object used to populate the text.
 
 Type: `object`
 
-Options will be passed directly to Nunjucks [Environment object constructor](https://mozilla.github.io/nunjucks/api.html#constructor) which will be used to compile templates.
+Options will be passed directly to the Nunjucks [Environment constructor](https://mozilla.github.io/nunjucks/api.html#constructor) which will be used to compile templates.
 
 ##### options.env
 
-Type: `nunjucks.Environment`  
+Type: `nunjucks.Environment`<br>
 Default: *`new nunjucks.Environment()`*
 
 The custom Nunjucks [Environment object](https://mozilla.github.io/nunjucks/api.html#environment) which will be used to compile templates. If supplied, the rest of `options` will be ignored.
@@ -91,7 +89,7 @@ Same options as [`nunjucks.precompile()`](https://mozilla.github.io/nunjucks/api
 
 #### options.name
 
-Type: `function`  
+Type: `function`<br>
 Default: *Relative template path. Example: `templates/list.html`*
 
 You can override the default behavior by supplying a function which gets the current [File](https://github.com/wearefractal/vinyl#constructoroptions) object and is expected to return the name.
