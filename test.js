@@ -125,8 +125,8 @@ test.cb('not alter gulp-data or data parameter', t => {
 	});
 
 	stream.on('end', () => {
-		t.same(files[0].data, {contents: 'foo'});
-		t.same(parameter, {
+		t.deepEqual(files[0].data, {contents: 'foo'});
+		t.deepEqual(parameter, {
 			foo: 'foo',
 			bar: 'bar',
 			foobar: ['foo', 'bar']
