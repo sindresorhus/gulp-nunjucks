@@ -47,7 +47,7 @@ function precompile(opts) {
 		var filePath = file.path;
 
 		try {
-			options.name = typeof options.name === 'function' && options.name(file) || file.relative;
+			options.name = (typeof options.name === 'function' && options.name(file)) || file.relative;
 			file.contents = new Buffer(nunjucks.precompileString(file.contents.toString(), options));
 			file.path = gutil.replaceExtension(filePath, '.js');
 			this.push(file);

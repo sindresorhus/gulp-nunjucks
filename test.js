@@ -143,6 +143,7 @@ test.cb('not alter gulp-data or data parameter', t => {
 
 test.cb('support custom environment', t => {
 	const nunjucksModule = require('nunjucks');
+
 	const env = new nunjucksModule.Environment();
 
 	env.addFilter('shorten', x => x.slice(0, 5));
