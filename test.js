@@ -2,10 +2,10 @@ import path from 'path';
 import test from 'ava';
 import gutil from 'gulp-util';
 import data from 'gulp-data';
-import fn from './';
+import m from './';
 
 test.cb('precompile Nunjucks templates', t => {
-	const stream = fn();
+	const stream = m();
 
 	stream.on('data', file => {
 		t.is(file.path, path.join(__dirname, 'fixture', 'fixture.js'));
@@ -23,12 +23,12 @@ test.cb('precompile Nunjucks templates', t => {
 });
 
 test.cb('support supplying custom name in a callback', t => {
-	const stream = fn({
+	const stream = m({
 		name: () => 'custom'
 	});
 
 	stream.on('data', file => {
-		t.regex(file.contents.toString(), /{}\)\["custom"\]/);
+		t.regex(file.contents.toString(), /{}\)\["custom"]/);
 		t.end();
 	});
 
@@ -40,7 +40,7 @@ test.cb('support supplying custom name in a callback', t => {
 });
 
 test.cb('compile Nunjucks templates', t => {
-	const stream = fn.compile({people: ['foo', 'bar']});
+	const stream = m.compile({people: ['foo', 'bar']});
 
 	stream.on('data', file => {
 		t.is(file.contents.toString(), '<li>foo</li><li>bar</li>');
@@ -60,7 +60,7 @@ test.cb('support data via gulp-data', t => {
 		dt: 'path'
 	}));
 
-	stream.pipe(fn.compile());
+	stream.pipe(m.compile());
 
 	stream.on('data', file => {
 		dl.push(file.contents.toString());
@@ -90,7 +90,7 @@ test.cb('extend gulp-data and data parameter', t => {
 		nested: {a: 'one', b: 'two'}
 	}));
 
-	stream.pipe(fn.compile({
+	stream.pipe(m.compile({
 		heading: 'people',
 		nested: {a: 'three'}
 	}));
@@ -118,7 +118,7 @@ test.cb('not alter gulp-data or data parameter', t => {
 		foobar: ['foo', 'bar']
 	};
 
-	stream.pipe(fn.compile(parameter));
+	stream.pipe(m.compile(parameter));
 
 	stream.on('data', file => {
 		files.push(file);
@@ -148,7 +148,7 @@ test.cb('support custom environment', t => {
 
 	env.addFilter('shorten', x => x.slice(0, 5));
 
-	const stream = fn.compile({message: 'Lorem ipsum'}, {env});
+	const stream = m.compile({message: 'Lorem ipsum'}, {env});
 
 	stream.on('data', file => {
 		t.is(file.contents.toString(), 'Lorem');
@@ -161,7 +161,7 @@ test.cb('support custom environment', t => {
 });
 
 test.cb('support custom environment options', t => {
-	const stream = fn.compile({message: '<span>Lorem ipsum</span>'}, {autoescape: false});
+	const stream = m.compile({message: '<span>Lorem ipsum</span>'}, {autoescape: false});
 
 	stream.on('data', file => {
 		t.is(file.contents.toString(), '<span>Lorem ipsum</span>');

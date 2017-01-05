@@ -1,8 +1,7 @@
 'use strict';
-var gutil = require('gulp-util');
-var through = require('through2');
-var assign = require('object-assign');
-var nunjucks = require('nunjucks');
+const gutil = require('gulp-util');
+const through = require('through2');
+const nunjucks = require('nunjucks');
 
 function compile(data, opts) {
 	return through.obj(function (file, enc, cb) {
@@ -16,9 +15,9 @@ function compile(data, opts) {
 			return;
 		}
 
-		var context = assign({}, data, file.data);
-		var filePath = file.path;
-		var env = (opts && opts.env) || new nunjucks.Environment(new nunjucks.FileSystemLoader(file.base), opts);
+		const context = Object.assign({}, data, file.data);
+		const filePath = file.path;
+		const env = (opts && opts.env) || new nunjucks.Environment(new nunjucks.FileSystemLoader(file.base), opts);
 
 		try {
 			file.contents = new Buffer(env.renderString(file.contents.toString(), context));
@@ -43,8 +42,8 @@ function precompile(opts) {
 			return;
 		}
 
-		var options = assign({}, opts);
-		var filePath = file.path;
+		const options = Object.assign({}, opts);
+		const filePath = file.path;
 
 		try {
 			options.name = (typeof options.name === 'function' && options.name(file)) || file.relative;
