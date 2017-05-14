@@ -18,7 +18,7 @@ test.cb('precompile Nunjucks templates', t => {
 	stream.write(new gutil.File({
 		base: __dirname,
 		path: path.join(__dirname, 'fixture', 'fixture.html'),
-		contents: new Buffer('<h1>{{ test }}</h1>')
+		contents: Buffer.from('<h1>{{ test }}</h1>')
 	}));
 });
 
@@ -35,7 +35,7 @@ test.cb('support supplying custom name in a callback', t => {
 	stream.write(new gutil.File({
 		base: __dirname,
 		path: path.join(__dirname, 'fixture', 'fixture.html'),
-		contents: new Buffer('<h1>{{ test }}</h1>')
+		contents: Buffer.from('<h1>{{ test }}</h1>')
 	}));
 });
 
@@ -48,7 +48,7 @@ test.cb('compile Nunjucks templates', t => {
 	});
 
 	stream.write(new gutil.File({
-		contents: new Buffer('{% for name in people %}<li>{{ name }}</li>{% endfor %}')
+		contents: Buffer.from('{% for name in people %}<li>{{ name }}</li>{% endfor %}')
 	}));
 });
 
@@ -73,12 +73,12 @@ test.cb('support data via gulp-data', t => {
 
 	stream.write(new gutil.File({
 		path: 'foo.txt',
-		contents: new Buffer('<dt>{{ dt }}</dt><dd>{{ dd }}</dd>')
+		contents: Buffer.from('<dt>{{ dt }}</dt><dd>{{ dd }}</dd>')
 	}));
 
 	stream.write(new gutil.File({
 		path: 'bar.txt',
-		contents: new Buffer('<dt>{{ dt }}</dt><dd>{{ dd }}</dd>')
+		contents: Buffer.from('<dt>{{ dt }}</dt><dd>{{ dd }}</dd>')
 	}));
 
 	stream.end();
@@ -101,7 +101,7 @@ test.cb('extend gulp-data and data parameter', t => {
 	});
 
 	stream.write(new gutil.File({
-		contents: new Buffer('<h1>{{ heading }}</h1>{% for name in people %}<li>{{ name }}</li>{% endfor %}{{ nested.a }},{{ nested.b }}')
+		contents: Buffer.from('<h1>{{ heading }}</h1>{% for name in people %}<li>{{ name }}</li>{% endfor %}{{ nested.a }},{{ nested.b }}')
 	}));
 });
 
@@ -135,7 +135,7 @@ test.cb('not alter gulp-data or data parameter', t => {
 	});
 
 	stream.write(new gutil.File({
-		contents: new Buffer('foo')
+		contents: Buffer.from('foo')
 	}));
 
 	stream.end();
@@ -156,7 +156,7 @@ test.cb('support custom environment', t => {
 	});
 
 	stream.write(new gutil.File({
-		contents: new Buffer('{{ message|shorten }}')
+		contents: Buffer.from('{{ message|shorten }}')
 	}));
 });
 
@@ -169,6 +169,6 @@ test.cb('support custom environment options', t => {
 	});
 
 	stream.write(new gutil.File({
-		contents: new Buffer('{{ message }}')
+		contents: Buffer.from('{{ message }}')
 	}));
 });
