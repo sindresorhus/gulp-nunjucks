@@ -20,7 +20,7 @@ function compile(data, opts) {
 		const env = (opts && opts.env) || new nunjucks.Environment(new nunjucks.FileSystemLoader(file.base), opts);
 
 		env.renderString(file.contents.toString(), context, function (err, res) {
-			if (err) return this.emit('error', new util.PluginError('gulp-nunjucks', err, { fileName: filePath }));
+			if (err) return this.emit('error', new gutil.PluginError('gulp-nunjucks', err, { fileName: filePath }));
 			file.contents = Buffer.from(res || '');
 			this.push(file);
 			cb();
