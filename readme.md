@@ -64,20 +64,20 @@ Compile a template using the provided `data`.
 
 #### data
 
-Type: `object`
+Type: `Object`
 
 The data object used to populate the text.
 
 #### options
 
-Type: `object`
+Type: `Object`
 
 Options will be passed directly to the Nunjucks [Environment constructor](https://mozilla.github.io/nunjucks/api.html#constructor) which will be used to compile templates.
 
 ##### options.env
 
 Type: `nunjucks.Environment`<br>
-Default: *`new nunjucks.Environment()`*
+Default: `new nunjucks.Environment()`
 
 The custom Nunjucks [Environment object](https://mozilla.github.io/nunjucks/api.html#environment) which will be used to compile templates. If supplied, the rest of `options` will be ignored.
 
@@ -87,12 +87,17 @@ Precompile a template for rendering dynamically at a later time.
 
 Same options as [`nunjucks.precompile()`](https://mozilla.github.io/nunjucks/api.html#precompile) except for `name`.
 
-#### options.name
+#### options
 
-Type: `function`<br>
-Default: *Relative template path. Example: `templates/list.html`*
+Type: `Object`
 
-You can override the default behavior by supplying a function which gets the current [File](https://github.com/wearefractal/vinyl#constructoroptions) object and is expected to return the name.
+##### name
+
+Type: `Function`<br>
+Default: Relative template path<br>
+Example: `templates/list.html`
+
+You can override the default behavior by supplying a function which gets the current [File](https://github.com/gulpjs/vinyl#options) object and is expected to return the name.
 
 Example:
 

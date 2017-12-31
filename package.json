@@ -1,48 +1,47 @@
 {
-  "name": "gulp-nunjucks",
-  "version": "3.0.0",
-  "description": "Compile/precompile Nunjucks templates",
-  "license": "MIT",
-  "repository": "sindresorhus/gulp-nunjucks",
-  "author": {
-    "name": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com"
-  },
-  "engines": {
-    "node": ">=4"
-  },
-  "scripts": {
-    "test": "xo && ava"
-  },
-  "files": [
-    "index.js"
-  ],
-  "keywords": [
-    "gulpplugin",
-    "nunjucks",
-    "jinja",
-    "jinja2",
-    "django",
-    "template",
-    "templating",
-    "view",
-    "precompile",
-    "compile",
-    "html",
-    "javascript"
-  ],
-  "dependencies": {
-    "gulp-util": "^3.0.0",
-    "nunjucks": "^3.0.0",
-    "through2": "^2.0.0"
-  },
-  "devDependencies": {
-    "ava": "*",
-    "gulp-data": "^1.2.1",
-    "xo": "*"
-  },
-  "xo": {
-    "esnext": true
-  }
+	"name": "gulp-nunjucks",
+	"version": "3.0.0",
+	"description": "Compile/precompile Nunjucks templates",
+	"license": "MIT",
+	"repository": "sindresorhus/gulp-nunjucks",
+	"author": {
+		"name": "Sindre Sorhus",
+		"email": "sindresorhus@gmail.com",
+		"url": "sindresorhus.com"
+	},
+	"engines": {
+		"node": ">=4"
+	},
+	"scripts": {
+		"test": "xo && ava"
+	},
+	"files": [
+		"index.js"
+	],
+	"keywords": [
+		"gulpplugin",
+		"nunjucks",
+		"jinja",
+		"jinja2",
+		"django",
+		"template",
+		"templating",
+		"view",
+		"precompile",
+		"compile",
+		"html",
+		"javascript"
+	],
+	"dependencies": {
+		"nunjucks": "^3.0.0",
+		"plugin-error": "^0.1.2",
+		"safe-buffer": "^5.1.1",
+		"through2": "^2.0.0"
+	},
+	"devDependencies": {
+		"ava": "*",
+		"gulp-data": "^1.2.1",
+		"vinyl": "^2.1.0",
+		"xo": "*"
+	}
 }

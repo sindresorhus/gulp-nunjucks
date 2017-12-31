@@ -1,8 +1,8 @@
 import path from 'path';
 import test from 'ava';
-import gutil from 'gulp-util';
 import data from 'gulp-data';
-import m from './';
+import Vinyl from 'vinyl';
+import m from '.';
 
 test.cb('precompile Nunjucks templates', t => {
 	const stream = m();
@@ -15,7 +15,7 @@ test.cb('precompile Nunjucks templates', t => {
 		t.end();
 	});
 
-	stream.write(new gutil.File({
+	stream.end(new Vinyl({
 		base: __dirname,
 		path: path.join(__dirname, 'fixture', 'fixture.html'),
 		contents: Buffer.from('<h1>{{ test }}</h1>')
@@ -32,7 +32,7 @@ test.cb('support supplying custom name in a callback', t => {
 		t.end();
 	});
 
-	stream.write(new gutil.File({
+	stream.end(new Vinyl({
 		base: __dirname,
 		path: path.join(__dirname, 'fixture', 'fixture.html'),
 		contents: Buffer.from('<h1>{{ test }}</h1>')
@@ -47,7 +47,7 @@ test.cb('compile Nunjucks templates', t => {
 		t.end();
 	});
 
-	stream.write(new gutil.File({
+	stream.end(new Vinyl({
 		contents: Buffer.from('{% for name in people %}<li>{{ name }}</li>{% endfor %}')
 	}));
 });
@@ -71,12 +71,12 @@ test.cb('support data via gulp-data', t => {
 		t.end();
 	});
 
-	stream.write(new gutil.File({
+	stream.write(new Vinyl({
 		path: 'foo.txt',
 		contents: Buffer.from('<dt>{{ dt }}</dt><dd>{{ dd }}</dd>')
 	}));
 
-	stream.write(new gutil.File({
+	stream.write(new Vinyl({
 		path: 'bar.txt',
 		contents: Buffer.from('<dt>{{ dt }}</dt><dd>{{ dd }}</dd>')
 	}));
@@ -100,7 +100,7 @@ test.cb('extend gulp-data and data parameter', t => {
 		t.end();
 	});
 
-	stream.write(new gutil.File({
+	stream.end(new Vinyl({
 		contents: Buffer.from('<h1>{{ heading }}</h1>{% for name in people %}<li>{{ name }}</li>{% endfor %}{{ nested.a }},{{ nested.b }}')
 	}));
 });
@@ -134,11 +134,9 @@ test.cb('not alter gulp-data or data parameter', t => {
 		t.end();
 	});
 
-	stream.write(new gutil.File({
+	stream.end(new Vinyl({
 		contents: Buffer.from('foo')
 	}));
-
-	stream.end();
 });
 
 test.cb('support custom environment', t => {
@@ -155,7 +153,7 @@ test.cb('support custom environment', t => {
 		t.end();
 	});
 
-	stream.write(new gutil.File({
+	stream.end(new Vinyl({
 		contents: Buffer.from('{{ message|shorten }}')
 	}));
 });
@@ -168,7 +166,7 @@ test.cb('support custom environment options', t => {
 		t.end();
 	});
 
-	stream.write(new gutil.File({
+	stream.end(new Vinyl({
 		contents: Buffer.from('{{ message }}')
 	}));
 });
