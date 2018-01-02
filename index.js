@@ -3,7 +3,6 @@ const through = require('through2');
 const nunjucks = require('nunjucks');
 const PluginError = require('plugin-error');
 const Buffer = require('safe-buffer').Buffer;
-const replaceExt = require('replace-ext');
 
 function compile(data, opts) {
 	return through.obj(function (file, enc, cb) {
@@ -50,7 +49,7 @@ function precompile(opts) {
 		try {
 			options.name = (typeof options.name === 'function' && options.name(file)) || file.relative;
 			file.contents = Buffer.from(nunjucks.precompileString(file.contents.toString(), options));
-			file.path = replaceExt(filePath, '.js');
+			file.extname = '.js';
 			this.push(file);
 		} catch (err) {
 			this.emit('error', new PluginError('gulp-nunjucks', err, {fileName: filePath}));
