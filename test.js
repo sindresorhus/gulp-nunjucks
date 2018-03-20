@@ -9,7 +9,7 @@ test.cb('precompile Nunjucks templates', t => {
 
 	stream.on('data', file => {
 		t.is(file.path, path.join(__dirname, 'fixture', 'fixture.js'));
-		t.is(file.relative, 'fixture/fixture.js');
+		t.is(file.relative, path.join('fixture', 'fixture.js'));
 		t.regex(file.contents.toString(), /nunjucksPrecompiled/);
 		t.regex(file.contents.toString(), /"fixture\/fixture\.html"/);
 		t.end();
