@@ -81,6 +81,21 @@ Default: `new nunjucks.Environment()`
 
 The custom Nunjucks [Environment object](https://mozilla.github.io/nunjucks/api.html#environment) which will be used to compile templates. If supplied, the rest of `options` will be ignored.
 
+##### options.filters
+
+Type: `Object`
+
+An object containing [custom filters](https://mozilla.github.io/nunjucks/api.html#custom-filters) that will be passed to Nunjucks, with the filter's name as key and the filter function as value.
+
+Example:
+
+```js
+{
+	'shorten': str => str.slice(0, 5),
+	'round': num => Math.round(num)
+}
+```
+
 ### nunjucks.precompile([options])
 
 Precompile a template for rendering dynamically at a later time.

@@ -170,3 +170,40 @@ test.cb('support custom environment options', t => {
 		contents: Buffer.from('{{ message }}')
 	}));
 });
+
+test.cb('support custom filters', t => {
+	const filters = {shorten: x => x.slice(0, 5), shout: x => `${x}!`};
+
+	const stream = m.compile({message: 'Lorem ipsum'}, {filters});
+
+	stream.on('data', file => {
+		t.is(file.contents.toString(), 'Lorem!');
+		t.end();
+	});
+
+	stream.end(new Vinyl({
+		contents: Buffer.from('{{ message|shorten|shout }}')
+	}));
+});
+
+test.cb('not pass custom filters to custom environment', t => {
+	const nunjucksModule = require('nunjucks');
+
+	const env = new nunjucksModule.Environment();
+
+	env.addFilter('shorten', x => x.slice(0, 5));
+
+	const filters = {shout: x => `${x}!`};
+
+	const stream = m.compile({message: 'Lorem ipsum'}, {env, filters});
+
+	stream.on('error', err => {
+		t.regex(err.message, /filter not found: shout/);
+		t.notRegex(err.message, /shorten/);
+		t.end();
+	});
+
+	stream.end(new Vinyl({
+		contents: Buffer.from('{{ message|shorten|shout }}')
+	}));
+});
