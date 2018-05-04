@@ -20,6 +20,12 @@ function compile(data, opts) {
 		const filePath = file.path;
 		const env = (opts && opts.env) || new nunjucks.Environment(new nunjucks.FileSystemLoader(file.base), opts);
 
+		if (opts && opts.filters && !opts.env) {
+			for (const key of Object.keys(opts.filters)) {
+				env.addFilter(key, opts.filters[key]);
+			}
+		}
+
 		try {
 			file.contents = Buffer.from(env.renderString(file.contents.toString(), context));
 			this.push(file);
