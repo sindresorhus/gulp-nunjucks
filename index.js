@@ -2,9 +2,8 @@
 const through = require('through2');
 const nunjucks = require('nunjucks');
 const PluginError = require('plugin-error');
-const Buffer = require('safe-buffer').Buffer;
 
-function compile(data, opts) {
+function compile(data, options = {}) {
 	return through.obj(function (file, enc, cb) {
 		if (file.isNull()) {
 			cb(null, file);
@@ -18,11 +17,11 @@ function compile(data, opts) {
 
 		const context = Object.assign({}, data, file.data);
 		const filePath = file.path;
-		const env = (opts && opts.env) || new nunjucks.Environment(new nunjucks.FileSystemLoader(file.base), opts);
+		const env = options.env || new nunjucks.Environment(new nunjucks.FileSystemLoader(file.base), options);
 
-		if (opts && opts.filters && !opts.env) {
-			for (const key of Object.keys(opts.filters)) {
-				env.addFilter(key, opts.filters[key]);
+		if (options.filters && !options.env) {
+			for (const key of Object.keys(options.filters)) {
+				env.addFilter(key, options.filters[key]);
 			}
 		}
 
@@ -37,7 +36,7 @@ function compile(data, opts) {
 	});
 }
 
-function precompile(opts) {
+function precompile(options) {
 	return through.obj(function (file, enc, cb) {
 		if (file.isNull()) {
 			cb(null, file);
@@ -49,12 +48,12 @@ function precompile(opts) {
 			return;
 		}
 
-		const options = Object.assign({}, opts);
+		const localOptions = Object.assign({}, options);
 		const filePath = file.path;
 
 		try {
-			options.name = (typeof options.name === 'function' && options.name(file)) || file.relative;
-			file.contents = Buffer.from(nunjucks.precompileString(file.contents.toString(), options));
+			localOptions.name = (typeof localOptions.name === 'function' && localOptions.name(file)) || file.relative;
+			file.contents = Buffer.from(nunjucks.precompileString(file.contents.toString(), localOptions));
 			file.extname = '.js';
 			this.push(file);
 		} catch (err) {
