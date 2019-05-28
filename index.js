@@ -4,18 +4,18 @@ const nunjucks = require('nunjucks');
 const PluginError = require('plugin-error');
 
 function compile(data, options = {}) {
-	return through.obj(function (file, enc, cb) {
+	return through.obj(function (file, encoding, callback) {
 		if (file.isNull()) {
-			cb(null, file);
+			callback(null, file);
 			return;
 		}
 
 		if (file.isStream()) {
-			cb(new PluginError('gulp-nunjucks', 'Streaming not supported'));
+			callback(new PluginError('gulp-nunjucks', 'Streaming not supported'));
 			return;
 		}
 
-		const context = Object.assign({}, data, file.data);
+		const context = {...data, ...file.data};
 		const filePath = file.path;
 		const env = options.env || new nunjucks.Environment(new nunjucks.FileSystemLoader(file.base), options);
 
@@ -28,11 +28,11 @@ function compile(data, options = {}) {
 		try {
 			file.contents = Buffer.from(env.renderString(file.contents.toString(), context));
 			this.push(file);
-		} catch (err) {
-			this.emit('error', new PluginError('gulp-nunjucks', err, {fileName: filePath}));
+		} catch (error) {
+			this.emit('error', new PluginError('gulp-nunjucks', error, {fileName: filePath}));
 		}
 
-		cb();
+		callback();
 	});
 }
 
@@ -48,7 +48,7 @@ function precompile(options) {
 			return;
 		}
 
-		const localOptions = Object.assign({}, options);
+		const localOptions = {...options};
 		const filePath = file.path;
 
 		try {
@@ -56,8 +56,8 @@ function precompile(options) {
 			file.contents = Buffer.from(nunjucks.precompileString(file.contents.toString(), localOptions));
 			file.extname = '.js';
 			this.push(file);
-		} catch (err) {
-			this.emit('error', new PluginError('gulp-nunjucks', err, {fileName: filePath}));
+		} catch (error) {
+			this.emit('error', new PluginError('gulp-nunjucks', error, {fileName: filePath}));
 		}
 
 		cb();

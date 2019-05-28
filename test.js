@@ -2,10 +2,10 @@ import path from 'path';
 import test from 'ava';
 import data from 'gulp-data';
 import Vinyl from 'vinyl';
-import m from '.';
+import nunjucks from '.';
 
 test.cb('precompile Nunjucks templates', t => {
-	const stream = m();
+	const stream = nunjucks();
 
 	stream.on('data', file => {
 		t.is(file.path, path.join(__dirname, 'fixture', 'fixture.js'));
@@ -23,7 +23,7 @@ test.cb('precompile Nunjucks templates', t => {
 });
 
 test.cb('support supplying custom name in a callback', t => {
-	const stream = m({
+	const stream = nunjucks({
 		name: () => 'custom'
 	});
 
@@ -40,7 +40,7 @@ test.cb('support supplying custom name in a callback', t => {
 });
 
 test.cb('compile Nunjucks templates', t => {
-	const stream = m.compile({people: ['foo', 'bar']});
+	const stream = nunjucks.compile({people: ['foo', 'bar']});
 
 	stream.on('data', file => {
 		t.is(file.contents.toString(), '<li>foo</li><li>bar</li>');
@@ -60,7 +60,7 @@ test.cb('support data via gulp-data', t => {
 		dt: 'path'
 	}));
 
-	stream.pipe(m.compile());
+	stream.pipe(nunjucks.compile());
 
 	stream.on('data', file => {
 		dl.push(file.contents.toString());
@@ -90,7 +90,7 @@ test.cb('extend gulp-data and data parameter', t => {
 		nested: {a: 'one', b: 'two'}
 	}));
 
-	stream.pipe(m.compile({
+	stream.pipe(nunjucks.compile({
 		heading: 'people',
 		nested: {a: 'three'}
 	}));
@@ -118,7 +118,7 @@ test.cb('not alter gulp-data or data parameter', t => {
 		foobar: ['foo', 'bar']
 	};
 
-	stream.pipe(m.compile(parameter));
+	stream.pipe(nunjucks.compile(parameter));
 
 	stream.on('data', file => {
 		files.push(file);
@@ -146,7 +146,7 @@ test.cb('support custom environment', t => {
 
 	env.addFilter('shorten', x => x.slice(0, 5));
 
-	const stream = m.compile({message: 'Lorem ipsum'}, {env});
+	const stream = nunjucks.compile({message: 'Lorem ipsum'}, {env});
 
 	stream.on('data', file => {
 		t.is(file.contents.toString(), 'Lorem');
@@ -159,7 +159,7 @@ test.cb('support custom environment', t => {
 });
 
 test.cb('support custom environment options', t => {
-	const stream = m.compile({message: '<span>Lorem ipsum</span>'}, {autoescape: false});
+	const stream = nunjucks.compile({message: '<span>Lorem ipsum</span>'}, {autoescape: false});
 
 	stream.on('data', file => {
 		t.is(file.contents.toString(), '<span>Lorem ipsum</span>');
@@ -174,7 +174,7 @@ test.cb('support custom environment options', t => {
 test.cb('support custom filters', t => {
 	const filters = {shorten: x => x.slice(0, 5), shout: x => `${x}!`};
 
-	const stream = m.compile({message: 'Lorem ipsum'}, {filters});
+	const stream = nunjucks.compile({message: 'Lorem ipsum'}, {filters});
 
 	stream.on('data', file => {
 		t.is(file.contents.toString(), 'Lorem!');
@@ -195,7 +195,7 @@ test.cb('not pass custom filters to custom environment', t => {
 
 	const filters = {shout: x => `${x}!`};
 
-	const stream = m.compile({message: 'Lorem ipsum'}, {env, filters});
+	const stream = nunjucks.compile({message: 'Lorem ipsum'}, {env, filters});
 
 	stream.on('error', err => {
 		t.regex(err.message, /filter not found: shout/);

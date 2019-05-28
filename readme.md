@@ -64,13 +64,13 @@ Compile a template using the provided `data`.
 
 #### data
 
-Type: `Object`
+Type: `object`
 
 The data object used to populate the text.
 
 #### options
 
-Type: `Object`
+Type: `object`
 
 Options will be passed directly to the Nunjucks [Environment constructor](https://mozilla.github.io/nunjucks/api.html#constructor) which will be used to compile templates.
 
@@ -83,7 +83,7 @@ The custom Nunjucks [Environment object](https://mozilla.github.io/nunjucks/api.
 
 ##### options.filters
 
-Type: `Object`
+Type: `object`
 
 An object containing [custom filters](https://mozilla.github.io/nunjucks/api.html#custom-filters) that will be passed to Nunjucks, with the filter's name as key and the filter function as value.
 
@@ -91,8 +91,8 @@ Example:
 
 ```js
 {
-	'shorten': str => str.slice(0, 5),
-	'round': num => Math.round(num)
+	'shorten': string => string.slice(0, 5),
+	'round': number => Math.round(number)
 }
 ```
 
@@ -104,7 +104,7 @@ Same options as [`nunjucks.precompile()`](https://mozilla.github.io/nunjucks/api
 
 #### options
 
-Type: `Object`
+Type: `object`
 
 ##### name
 
@@ -121,8 +121,3 @@ Example:
 	name: file => `tpl-${file.relative}`
 }
 ```
-
-
-## License
-
-MIT © [Sindre Sorhus](https://sindresorhus.com)
