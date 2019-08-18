@@ -38,7 +38,7 @@
 		"through2": "^3.0.1"
 	},
 	"devDependencies": {
-		"ava": "^1.4.1",
+		"ava": "^2.3.0",
 		"gulp-data": "^1.2.1",
 		"vinyl": "^2.1.0",
 		"xo": "^0.24.0"

@@ -20,7 +20,7 @@ $ npm install --save-dev gulp-nunjucks
 const gulp = require('gulp');
 const nunjucks = require('gulp-nunjucks');
 
-gulp.task('default', () =>
+exports.default = () => (
 	gulp.src('templates/greeting.html')
 		.pipe(nunjucks.compile({name: 'Sindre'}))
 		.pipe(gulp.dest('dist'))
@@ -34,7 +34,7 @@ const gulp = require('gulp');
 const nunjucks = require('gulp-nunjucks');
 const data = require('gulp-data');
 
-gulp.task('default', () =>
+exports.default = () => (
 	gulp.src('templates/greeting.html')
 		.pipe(data(() => ({name: 'Sindre'})))
 		.pipe(nunjucks.compile())
@@ -48,7 +48,7 @@ gulp.task('default', () =>
 const gulp = require('gulp');
 const nunjucks = require('gulp-nunjucks');
 
-gulp.task('default', () =>
+exports.default = () => (
 	gulp.src('templates/greeting.html')
 		.pipe(nunjucks.precompile())
 		.pipe(gulp.dest('dist'))
@@ -58,7 +58,7 @@ gulp.task('default', () =>
 
 ## API
 
-### nunjucks.compile([data], [options])
+### nunjucks.compile(data?, options?)
 
 Compile a template using the provided `data`.
 
@@ -96,7 +96,7 @@ Example:
 }
 ```
 
-### nunjucks.precompile([options])
+### nunjucks.precompile(options?)
 
 Precompile a template for rendering dynamically at a later time.
 
@@ -118,6 +118,6 @@ Example:
 
 ```js
 {
-	name: file => `tpl-${file.relative}`
+	name: file => `template-${file.relative}`
 }
 ```

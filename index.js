@@ -37,14 +37,14 @@ function compile(data, options = {}) {
 }
 
 function precompile(options) {
-	return through.obj(function (file, enc, cb) {
+	return through.obj(function (file, encoding, callback) {
 		if (file.isNull()) {
-			cb(null, file);
+			callback(null, file);
 			return;
 		}
 
 		if (file.isStream()) {
-			cb(new PluginError('gulp-nunjucks', 'Streaming not supported'));
+			callback(new PluginError('gulp-nunjucks', 'Streaming not supported'));
 			return;
 		}
 
@@ -60,7 +60,7 @@ function precompile(options) {
 			this.emit('error', new PluginError('gulp-nunjucks', error, {fileName: filePath}));
 		}
 
-		cb();
+		callback();
 	});
 }
 
