@@ -45,5 +45,10 @@
 	},
 	"peerDependencies": {
 		"gulp": ">=4"
+	},
+	"peerDependenciesMeta": {
+		"gulp": {
+			"optional": true
+		}
 	}
 }
