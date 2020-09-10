@@ -27,6 +27,7 @@ function compile(data, options = {}) {
 
 		try {
 			file.contents = Buffer.from(env.renderString(file.contents.toString(), context));
+			file.extname = '.html';
 			this.push(file);
 		} catch (error) {
 			this.emit('error', new PluginError('gulp-nunjucks', error, {fileName: filePath}));

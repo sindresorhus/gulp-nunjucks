@@ -22,6 +22,22 @@ test.cb('precompile Nunjucks templates', t => {
 	}));
 });
 
+test.cb('compile Nunjucks templates', t => {
+	const stream = nunjucks.compile({people: ['foo', 'bar']});
+
+	stream.on('data', file => {
+		t.is(file.relative, path.join('fixture', 'fixture.html'));
+		t.is(file.contents.toString(), '<li>foo</li><li>bar</li>');
+		t.end();
+	});
+
+	stream.end(new Vinyl({
+		base: __dirname,
+		path: path.join(__dirname, 'fixture', 'fixture.njk'),
+		contents: Buffer.from('{% for name in people %}<li>{{ name }}</li>{% endfor %}')
+	}));
+});
+
 test.cb('support supplying custom name in a callback', t => {
 	const stream = nunjucks({
 		name: () => 'custom'
@@ -36,19 +52,6 @@ test.cb('support supplying custom name in a callback', t => {
 		base: __dirname,
 		path: path.join(__dirname, 'fixture', 'fixture.html'),
 		contents: Buffer.from('<h1>{{ test }}</h1>')
-	}));
-});
-
-test.cb('compile Nunjucks templates', t => {
-	const stream = nunjucks.compile({people: ['foo', 'bar']});
-
-	stream.on('data', file => {
-		t.is(file.contents.toString(), '<li>foo</li><li>bar</li>');
-		t.end();
-	});
-
-	stream.end(new Vinyl({
-		contents: Buffer.from('{% for name in people %}<li>{{ name }}</li>{% endfor %}')
 	}));
 });
 
@@ -101,6 +104,7 @@ test.cb('extend gulp-data and data parameter', t => {
 	});
 
 	stream.end(new Vinyl({
+		path: 'foo.txt',
 		contents: Buffer.from('<h1>{{ heading }}</h1>{% for name in people %}<li>{{ name }}</li>{% endfor %}{{ nested.a }},{{ nested.b }}')
 	}));
 });
@@ -135,6 +139,7 @@ test.cb('not alter gulp-data or data parameter', t => {
 	});
 
 	stream.end(new Vinyl({
+		path: 'foo.txt',
 		contents: Buffer.from('foo')
 	}));
 });
@@ -154,6 +159,7 @@ test.cb('support custom environment', t => {
 	});
 
 	stream.end(new Vinyl({
+		path: 'foo.txt',
 		contents: Buffer.from('{{ message|shorten }}')
 	}));
 });
@@ -167,6 +173,7 @@ test.cb('support custom environment options', t => {
 	});
 
 	stream.end(new Vinyl({
+		path: 'foo.txt',
 		contents: Buffer.from('{{ message }}')
 	}));
 });
@@ -182,6 +189,7 @@ test.cb('support custom filters', t => {
 	});
 
 	stream.end(new Vinyl({
+		path: 'foo.txt',
 		contents: Buffer.from('{{ message|shorten|shout }}')
 	}));
 });
