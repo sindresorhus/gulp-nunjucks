@@ -194,6 +194,22 @@ test.cb('support custom filters', t => {
 	}));
 });
 
+test.cb('support async custom filters', t => {
+	const filters = {shorten: async x => x.slice(0, 5), shout: async x => `${x}!`};
+
+	const stream = nunjucks.compile({message: 'Lorem ipsum'}, {filters});
+
+	stream.on('data', file => {
+		t.is(file.contents.toString(), 'Lorem!');
+		t.end();
+	});
+
+	stream.end(new Vinyl({
+		path: 'foo.txt',
+		contents: Buffer.from('{{ message|shorten|shout }}')
+	}));
+});
+
 test.cb('not pass custom filters to custom environment', t => {
 	const nunjucksModule = require('nunjucks');
 
