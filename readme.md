@@ -87,12 +87,19 @@ Type: `object`
 
 An object containing [custom filters](https://mozilla.github.io/nunjucks/api.html#custom-filters) that will be passed to Nunjucks, with the filter's name as key and the filter function as value.
 
+Async filters should be defined as async functions. You cannot use just a promise-returning function.
+
 Example:
 
 ```js
 {
 	'shorten': string => string.slice(0, 5),
-	'round': number => Math.round(number)
+	'round': number => Math.round(number),
+	'fetch': async url => {
+		const response = await fetch(url);
+		const result = await response.text();
+		return result;
+	}
 }
 ```
 
