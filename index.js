@@ -54,6 +54,7 @@ function compile(data, options = {}) {
 					if (error) {
 						this.emit('error', new PluginError('gulp-nunjucks', error, {fileName: filePath}));
 						callback();
+						return;
 					}
 
 					writeResult(result);
