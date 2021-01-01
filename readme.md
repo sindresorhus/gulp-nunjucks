@@ -1,4 +1,4 @@
-# gulp-nunjucks [![Build Status](https://travis-ci.org/sindresorhus/gulp-nunjucks.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-nunjucks)
+# gulp-nunjucks
 
 > Compile/precompile [Nunjucks](https://mozilla.github.io/nunjucks/) templates
 
