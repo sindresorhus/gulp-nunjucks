@@ -102,3 +102,4 @@ function precompile(options) {
 module.exports = precompile;
 module.exports.compile = compile;
 module.exports.precompile = precompile;
+module.exports.nunjucks = nunjucks;
