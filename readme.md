@@ -4,25 +4,23 @@
 
 *Issues with the output should be reported on the Nunjucks [issue tracker](https://github.com/mozilla/nunjucks/issues).*
 
-
 ## Install
 
+```sh
+npm install --save-dev gulp-nunjucks
 ```
-$ npm install --save-dev gulp-nunjucks
-```
-
 
 ## Usage
 
 ### Compile
 
 ```js
-const gulp = require('gulp');
-const nunjucks = require('gulp-nunjucks');
+import gulp from 'gulp';
+import {nunjucksCompile} from 'gulp-nunjucks';
 
-exports.default = () => (
+export default () => (
 	gulp.src('templates/greeting.html')
-		.pipe(nunjucks.compile({name: 'Sindre'}))
+		.pipe(nunjucksCompile({name: 'Sindre'}))
 		.pipe(gulp.dest('dist'))
 );
 ```
@@ -30,14 +28,14 @@ exports.default = () => (
 You can alternatively use [gulp-data](https://github.com/colynb/gulp-data) to inject the data:
 
 ```js
-const gulp = require('gulp');
-const nunjucks = require('gulp-nunjucks');
-const data = require('gulp-data');
+import gulp from 'gulp';
+import {nunjucksCompile} from 'gulp-nunjucks';
+import data from 'gulp-data';
 
-exports.default = () => (
+export default () => (
 	gulp.src('templates/greeting.html')
 		.pipe(data(() => ({name: 'Sindre'})))
-		.pipe(nunjucks.compile())
+		.pipe(nunjucksCompile())
 		.pipe(gulp.dest('dist'))
 );
 ```
@@ -45,16 +43,15 @@ exports.default = () => (
 ### Precompile
 
 ```js
-const gulp = require('gulp');
-const nunjucks = require('gulp-nunjucks');
+import gulp from 'gulp';
+import {nunjucksPrecompile} from 'gulp-nunjucks';
 
-exports.default = () => (
+export default () => (
 	gulp.src('templates/greeting.html')
-		.pipe(nunjucks.precompile())
+		.pipe(nunjucksPrecompile())
 		.pipe(gulp.dest('dist'))
 );
 ```
-
 
 ## API
 
@@ -76,7 +73,7 @@ Options will be passed directly to the Nunjucks [Environment constructor](https:
 
 ##### options.env
 
-Type: `nunjucks.Environment`<br>
+Type: `nunjucks.Environment`\
 Default: `new nunjucks.Environment()`
 
 The custom Nunjucks [Environment object](https://mozilla.github.io/nunjucks/api.html#environment) which will be used to compile templates. If supplied, the rest of `options` will be ignored.
@@ -88,8 +85,6 @@ Type: `object`
 An object containing [custom filters](https://mozilla.github.io/nunjucks/api.html#custom-filters) that will be passed to Nunjucks, with the filter's name as key and the filter function as value.
 
 Async filters should be defined as async functions. You cannot use just a promise-returning function.
-
-Example:
 
 ```js
 {
@@ -115,8 +110,8 @@ Type: `object`
 
 ##### name
 
-Type: `Function`<br>
-Default: Relative template path<br>
+Type: `Function`\
+Default: Relative template path\
 Example: `templates/list.html`
 
 You can override the default behavior by supplying a function which gets the current [File](https://github.com/gulpjs/vinyl#options) object and is expected to return the name.
