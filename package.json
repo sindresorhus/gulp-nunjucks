@@ -1,6 +1,6 @@
 {
 	"name": "gulp-nunjucks",
-	"version": "5.1.0",
+	"version": "6.0.0",
 	"description": "Compile/precompile Nunjucks templates",
 	"license": "MIT",
 	"repository": "sindresorhus/gulp-nunjucks",
