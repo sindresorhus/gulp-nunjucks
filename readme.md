@@ -55,7 +55,7 @@ export default () => (
 
 ## API
 
-### nunjucks.compile(data?, options?)
+### nunjucksCompile(data?, options?)
 
 Compile a template using the provided `data`.
 
@@ -98,7 +98,7 @@ Async filters should be defined as async functions. You cannot use just a promis
 }
 ```
 
-### nunjucks.precompile(options?)
+### nunjucksPrecompile(options?)
 
 Precompile a template for rendering dynamically at a later time.
 
