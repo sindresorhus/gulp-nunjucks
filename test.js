@@ -226,3 +226,17 @@ test('not pass custom filters to custom environment', async t => {
 		t.notRegex(error.message, /shorten/);
 	}
 });
+
+test('support async templates with asyncEach tag', async t => {
+	const env = new nunjucksModule.Environment(null, {async: true});
+	const stream = nunjucksCompile({items: ['a', 'b', 'c']}, {env});
+	const promise = pEvent(stream, 'data');
+
+	stream.end(new Vinyl({
+		path: 'async.njk',
+		contents: Buffer.from('{% asyncEach item in items %}{{ item }}{% endeach %}'),
+	}));
+
+	const file = await promise;
+	t.is(file.contents.toString(), 'abc');
+});
