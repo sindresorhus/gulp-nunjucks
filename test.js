@@ -240,3 +240,117 @@ test('support async templates with asyncEach tag', async t => {
 	const file = await promise;
 	t.is(file.contents.toString(), 'abc');
 });
+
+test('support custom extensions', async t => {
+	function UppercaseExtension() {
+		this.tags = ['uppercase'];
+
+		this.parse = function (parser, nodes) {
+			const token = parser.nextToken();
+			parser.advanceAfterBlockEnd(token.value);
+			const body = parser.parseUntilBlocks('enduppercase');
+			parser.advanceAfterBlockEnd();
+			return new nodes.CallExtension(this, 'run', null, [body]);
+		};
+
+		this.run = function (context, content) {
+			return content().toUpperCase();
+		};
+	}
+
+	const extensions = {UppercaseExtension: new UppercaseExtension()};
+	const stream = nunjucksCompile({message: 'Hello World'}, {extensions});
+	const promise = pEvent(stream, 'data');
+
+	stream.end(new Vinyl({
+		path: 'foo.txt',
+		contents: Buffer.from('{% uppercase %}{{ message }}{% enduppercase %}'),
+	}));
+
+	const file = await promise;
+	t.is(file.contents.toString(), 'HELLO WORLD');
+});
+
+test('support multiple extensions', async t => {
+	function UppercaseExtension() {
+		this.tags = ['uppercase'];
+
+		this.parse = function (parser, nodes) {
+			const token = parser.nextToken();
+			parser.advanceAfterBlockEnd(token.value);
+			const body = parser.parseUntilBlocks('enduppercase');
+			parser.advanceAfterBlockEnd();
+			return new nodes.CallExtension(this, 'run', null, [body]);
+		};
+
+		this.run = function (context, content) {
+			return content().toUpperCase();
+		};
+	}
+
+	function ReverseExtension() {
+		this.tags = ['reverse'];
+
+		this.parse = function (parser, nodes) {
+			const token = parser.nextToken();
+			parser.advanceAfterBlockEnd(token.value);
+			const body = parser.parseUntilBlocks('endreverse');
+			parser.advanceAfterBlockEnd();
+			return new nodes.CallExtension(this, 'run', null, [body]);
+		};
+
+		this.run = function (context, content) {
+			return [...content()].reverse().join('');
+		};
+	}
+
+	const extensions = {
+		UppercaseExtension: new UppercaseExtension(),
+		ReverseExtension: new ReverseExtension(),
+	};
+
+	const stream = nunjucksCompile({text: 'hello'}, {extensions});
+	const promise = pEvent(stream, 'data');
+
+	stream.end(new Vinyl({
+		path: 'foo.txt',
+		contents: Buffer.from('{% uppercase %}{% reverse %}{{ text }}{% endreverse %}{% enduppercase %}'),
+	}));
+
+	const file = await promise;
+	t.is(file.contents.toString(), 'OLLEH');
+});
+
+test('not pass custom extensions to custom environment', async t => {
+	function TestExtension() {
+		this.tags = ['test'];
+
+		this.parse = function (parser, nodes) {
+			const token = parser.nextToken();
+			parser.advanceAfterBlockEnd(token.value);
+			const body = parser.parseUntilBlocks('endtest');
+			parser.advanceAfterBlockEnd();
+			return new nodes.CallExtension(this, 'run', null, [body]);
+		};
+
+		this.run = function () {
+			return 'TEST';
+		};
+	}
+
+	const env = new nunjucksModule.Environment();
+	const extensions = {TestExtension: new TestExtension()};
+	const stream = nunjucksCompile({}, {env, extensions});
+	const promise = pEvent(stream);
+
+	stream.end(new Vinyl({
+		contents: Buffer.from('{% test %}content{% endtest %}'),
+	}));
+
+	try {
+		await promise;
+		t.fail('Should have thrown an error');
+	} catch (error) {
+		t.regex(error.message, /unknown block tag: test/);
+	}
+});

@@ -98,6 +98,18 @@ Async filters should be defined as async functions. You cannot use just a promis
 }
 ```
 
+##### options.extensions
+
+Type: `object`
+
+An object containing [custom tags/extensions](https://mozilla.github.io/nunjucks/api.html#custom-tags) that will be passed to Nunjucks, with the extension's name as key and the extension instance as value.
+
+```js
+{
+	'UppercaseExtension': new UppercaseExtension()
+}
+```
+
 ### nunjucksPrecompile(options?)
 
 Precompile a template for rendering dynamically at a later time.

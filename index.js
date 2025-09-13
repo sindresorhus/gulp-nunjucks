@@ -26,6 +26,12 @@ export function nunjucksCompile(data, options = {}) {
 			}
 		}
 
+		if (options.extensions && !options.env) {
+			for (const [key, extension] of Object.entries(options.extensions)) {
+				env.addExtension(key, extension);
+			}
+		}
+
 		file.contents = Buffer.from(await promisify(env.renderString.bind(env))(file.contents.toString(), context));
 		file.extname = '.html';
 
