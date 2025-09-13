@@ -32,7 +32,27 @@ export function nunjucksCompile(data, options = {}) {
 			}
 		}
 
-		file.contents = Buffer.from(await promisify(env.renderString.bind(env))(file.contents.toString(), context));
+		try {
+			file.contents = Buffer.from(await promisify(env.renderString.bind(env))(file.contents.toString(), context));
+		} catch (error) {
+			// Improve Nunjucks template error messages
+			if (error.message.includes('template not found:')) {
+				const templateName = error.message.match(/template not found: (.+)/)?.[1];
+				const cleanError = new Error(`Template not found: ${templateName}`);
+				cleanError.name = 'NunjucksTemplateError';
+				throw cleanError;
+			}
+
+			// For other template errors, provide cleaner messages
+			if (error.name === 'Template render error') {
+				const cleanError = new Error(error.message.split('\n').at(-1).trim());
+				cleanError.name = 'NunjucksTemplateError';
+				throw cleanError;
+			}
+
+			throw error;
+		}
+
 		file.extname = '.html';
 
 		return file;

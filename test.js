@@ -354,3 +354,20 @@ test('not pass custom extensions to custom environment', async t => {
 		t.regex(error.message, /unknown block tag: test/);
 	}
 });
+
+test('provide clean error message for missing templates', async t => {
+	const stream = nunjucksCompile({title: 'Test'});
+	const promise = pEvent(stream);
+
+	stream.end(new Vinyl({
+		base: __dirname,
+		path: path.join(__dirname, 'test.njk'),
+		contents: Buffer.from('{% extends "non-existent-layout.njk" %}\n{% block content %}{{ title }}{% endblock %}'),
+	}));
+
+	const error = await t.throwsAsync(promise);
+	t.is(error.constructor.name, 'PluginError');
+	t.is(error.name, 'NunjucksTemplateError');
+	t.regex(error.message, /Template not found: non-existent-layout\.njk/);
+	t.false(error.message.includes('at Object._prettifyError'));
+});
