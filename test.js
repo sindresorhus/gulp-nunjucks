@@ -44,6 +44,34 @@ test('compile Nunjucks templates', async t => {
 	t.is(file.contents.toString(), '<li>foo</li><li>bar</li>');
 });
 
+test('compile without any arguments', async t => {
+	const stream = nunjucksCompile(); // No arguments
+	const promise = pEvent(stream, 'data');
+
+	stream.end(new Vinyl({
+		path: 'test.html',
+		contents: Buffer.from('<p>Static content</p>'),
+	}));
+
+	const file = await promise;
+	t.is(file.contents.toString(), '<p>Static content</p>');
+	t.is(file.extname, '.html');
+});
+
+test('compile with undefined data', async t => {
+	const stream = nunjucksCompile(undefined);
+	const promise = pEvent(stream, 'data');
+
+	stream.end(new Vinyl({
+		path: 'test.njk',
+		contents: Buffer.from('<h1>{{ title }}</h1>'),
+	}));
+
+	const file = await promise;
+	// Variables without data should render as empty string
+	t.is(file.contents.toString(), '<h1></h1>');
+});
+
 test('support supplying custom name in a callback', async t => {
 	const stream = nunjucksPrecompile({
 		name: () => 'custom',
